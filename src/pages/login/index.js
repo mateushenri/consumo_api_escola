@@ -1,10 +1,30 @@
 import React from 'react';
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+
 import { Title, TextInputs, Form, Button } from './styled';
 import { Container, ContainerInside } from '../../styles/GlobalStyles';
+import * as actions from '../../store/modules/example/actions';
+import Axios from '../../services/axios';
 
 export default function Login() {
-  toast.error('teste', { toastId: 1 });
+  const dispatch = useDispatch();
+  // eslint-disable-next-line
+  React.useEffect(() => {
+    async function getData() {
+      await Axios.get('/alunos/show', {
+        headers: {
+          authorization:
+            'bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWF0ZXVzLndpZ2dlcnM5MEBnbWFpbC5jb20iLCJpYXQiOjE2MjI3NTYyNTUsImV4cCI6MTYyMzM2MTA1NX0.hA4-yQfmJvtws-wW2cKyLAVXzr9wH4DlJmE5DVrrfpw',
+        },
+      }).then((res) => console.log(res.data));
+    }
+    getData();
+  }, []);
+  function handleRedux(e) {
+    e.preventDefault();
+    dispatch(actions.clicaBotao());
+  }
+
   return (
     <Container>
       <ContainerInside>
@@ -20,7 +40,9 @@ export default function Login() {
             type="password"
             placeholder="Digite sua senha..."
           />
-          <Button type="submit">Login</Button>
+          <Button onClick={handleRedux} type="submit">
+            Login
+          </Button>
         </Form>
       </ContainerInside>
     </Container>
